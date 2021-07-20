@@ -1,0 +1,39 @@
+<ons-page id="first-page">
+    <div style="text-align: center; margin-top: 60px;">
+    <h3>タイトル</h3>
+    <p id="title1" float></p>
+    <h3>日付</h3>
+    <p>
+     <p id="start1" modifier="underbar" type="date" float></p>
+    </p>
+    <p>
+     <p id="end1" modifier="underbar" type="date" float></p>
+    </p>
+    <p>
+     繰り返し<p id="repetition1"></p>
+    </p>
+    <h3>場所</h3>
+    <p id="place1" float></p>
+    <p style="margin-top: 30px;">
+    </p>
+    </div>
+    <script>
+      ons.getScriptPage().onShow = async function() {
+        var Schedule = ncmb.DataStore("Schedule");
+        Schedule.fetchAll()
+          .then(function(results){
+            for (var i = 0; i < results.length; i++) {
+              var object = results[i];
+              $('#repetition1').text(object.get("place"));
+              $('#title1').text(object.get("title"));
+              $('#place1').text(object.get("place"));
+              $('#start1').text(object.get("start"));
+              $('#end1').text(object.get("end"));
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      }
+    </script>
+  </ons-page>

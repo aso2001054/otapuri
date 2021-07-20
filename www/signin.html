@@ -1,0 +1,58 @@
+<ons-page>
+  <div style="text-align: center; margin-top: 60px;">
+    <p>
+      <ons-input id="userName" modifier="underbar" placeholder="ユーザ名" float></ons-input>
+    </p>
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="パスワード" float></ons-input>
+    </p>
+    <p style="margin-top: 30px;">
+      <ons-button id="signin">サインイン</ons-button>
+    </p>
+    <p style="margin-top: 30px;">
+      <ons-button id="signup">サインアップ</ons-button>
+    </p>
+  </div>
+  <script>
+    ons.getScriptPage().onInit = function() {
+      console.log("signin init start");
+
+      // サインインボタンを押した時の処理
+      $('#signin').on('click', async e => {
+        console.log("signin click");
+        const userName = $('#userName').val();
+        const password = $('#password').val();
+        try {
+          // サインイン処理です。
+          await loginUser(userName, password);
+          // サインインできたらホーム画面に遷移します
+          $('#navigator')[0].pushPage('home.html');
+        } catch (e) {
+          // エラーの場合ID/パスワード不一致になります
+          ons.notification.alert('ログイン失敗しました。ユーザ名、パスワードを確認してください');
+          return false;
+        }
+      });
+
+      // サインアップボタンを押した時の処理
+      $('#signup').on('click', e => {
+        console.log("signup click");
+        $('#navigator')[0].pushPage('signup.html');
+      });
+    }
+
+    ons.getScriptPage().onShow = function() {
+      console.log("signin show start");
+    }
+    
+    // ユーザログイン処理
+    async function loginUser(userName, password) {
+      await ncmb.User.login(userName, password);
+      const user = ncmb.User.getCurrentUser();
+      const acl = new ncmb.Acl();
+      acl.setPublicReadAccess(true)
+        .setUserWriteAccess(user, true);
+      await user.set('acl', acl).update();
+    }
+  </script>
+</ons-page>

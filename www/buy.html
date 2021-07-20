@@ -1,0 +1,42 @@
+<ons-page id="first-page">
+    <div style="text-align: center; margin-top: 60px;">
+    <h3>タイトル</h3>
+    <ons-input id="title" modifier="underbar" placeholder="タイトル" float></ons-input>
+    <h3>日付</h3>
+    <p>
+     <ons-input id="start" modifier="underbar" type="date" float></ons-input>
+    </p>
+    <p>
+     <ons-input id="end" modifier="underbar" type="date" float></ons-input>
+    </p>
+    <p>
+     <ons-checkbox id="repetition"></ons-checkbox>繰り返し
+    </p>
+    <h3>場所</h3>
+    <ons-input id="place" modifier="underbar" placeholder="場所" float></ons-input>
+    <p style="margin-top: 30px;">
+     <ons-button id="submit">登録する</ons-button>
+    </p>
+    </div>
+    <script>
+      ons.getScriptPage().onInit = async function() {
+        console.log("schedule init start");
+        $('#submit').on('click', async e => {
+          const title = $('#title').val();
+          const place = $('#place').val();
+          const start = $('#start').val();
+          const end = $('#end').val();
+          const Schedule = ncmb.DataStore('Schedule');
+          const sche = new Schedule();
+          sche
+            .set('title', title)
+            .set('place', place)
+            .set('start', start)
+            .set('end', end)
+            .save();     
+          $('#calendarNav')[0].resetToPage('calendar.html');
+          ons.notification.alert('スケジュールを登録しました。');
+        })
+      }
+    </script>
+  </ons-page>

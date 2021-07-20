@@ -1,0 +1,22 @@
+<ons-page id='calendar-page'>
+  <ons-navigator id="calendarNav">
+    <div id='calendar'></div>
+  </ons-navigator>
+  <script>
+    ons.getScriptPage().onShow = function(event) {
+      console.log("calendar show start");
+      $('#toolbar-title').html('カレンダー');
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl,{
+        contentHeight: 'auto',
+        selectable: true,
+        dateClick: function(info) {
+          // 日付マスをクリックしたときの処理
+          $('#calendarNav')[0].pushPage('schedule.html');
+        },
+
+      });
+      calendar.render();
+    }
+  </script>  
+</ons-page>
